@@ -1,27 +1,31 @@
 public class Builder {
-    private String[] positions = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-
+    private String[] positions;
     private String player1SymbolChoice = "X";
     private String player2SymbolChoice = "O";
 
     public void startGame() {
-        this.printBoard();
+        boolean playAnotherGame = true;
+        while (playAnotherGame) {
+            this.resetBoard();
+            this.printBoard();
 
-        boolean isPlayer1Winner = this.coinFlip();
-        String winner = isPlayer1Winner ? "Player X" : "Player O";
-        String firstPlayerSymbol = isPlayer1Winner ? this.player1SymbolChoice : this.player2SymbolChoice;
-        String secondPlayerSymbol = !isPlayer1Winner ? this.player1SymbolChoice : this.player2SymbolChoice;
-        System.out.println(winner + " goes first due to a coin flip.");
+            boolean isPlayer1Winner = this.coinFlip();
+            String winner = isPlayer1Winner ? "Player X" : "Player O";
+            String firstPlayerSymbol = isPlayer1Winner ? this.player1SymbolChoice : this.player2SymbolChoice;
+            String secondPlayerSymbol = !isPlayer1Winner ? this.player1SymbolChoice : this.player2SymbolChoice;
+            System.out.println(winner + " goes first due to a coin flip.");
 
-        for (int i = 1; i <= 5; i++) {
-            this.gatherPlayerChoice(firstPlayerSymbol);
-            if (this.isGameFinished(i)) {
-                break;
+            for (int i = 1; i <= 5; i++) {
+                this.gatherPlayerChoice(firstPlayerSymbol);
+                if (this.isGameFinished(i)) {
+                    break;
+                }
+                this.gatherPlayerChoice(secondPlayerSymbol);
+                if (this.isGameFinished(i)) {
+                    break;
+                }
             }
-            this.gatherPlayerChoice(secondPlayerSymbol);
-            if (this.isGameFinished(i)) {
-                break;
-            }
+            playAnotherGame = GatherInput.gatherBooleanInput("Would you like to play another game?");
         }
     }
 
@@ -89,5 +93,9 @@ public class Builder {
 
                 this.isMatchingRow(3, 5, 7, playerSymbolChoice) ||
                 this.isMatchingRow(1, 5, 9, playerSymbolChoice);
+    }
+
+    private void resetBoard() {
+        this.positions = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     }
 }
